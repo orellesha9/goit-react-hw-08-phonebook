@@ -1,4 +1,18 @@
 .wrapper {
+    margin: 16px 0 0 16px;
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    flex-direction: column;
+    width: 450px;
+
+}
+
+.listWrapper {
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.title {
+    margin: 0;
 }

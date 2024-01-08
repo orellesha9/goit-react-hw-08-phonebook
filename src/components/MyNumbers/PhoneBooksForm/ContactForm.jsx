@@ -1,13 +1,12 @@
 import { Component } from 'react';
-import styles from './phone-books-form.module.css';
+import styles from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 
 const INITIAL_STATE = {
-  contacts: [],
   name: '',
   number: '',
 };
-class PhoneBooksForm extends Component {
+class ContactForm extends Component {
   bookTitleID = nanoid();
   bookNumberID = nanoid();
 
@@ -23,6 +22,7 @@ class PhoneBooksForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    this.props.onSubmit({ ...this.state });
     this.reset();
   };
 
@@ -66,4 +66,4 @@ class PhoneBooksForm extends Component {
   }
 }
 
-export default PhoneBooksForm;
+export default ContactForm;
