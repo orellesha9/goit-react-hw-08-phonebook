@@ -25,7 +25,7 @@ class MyNumbers extends Component {
       const normalizedCurrentNumber = item.number.toLowerCase();
 
       return (
-        normalizedCurrentName === normalizedName &&
+        normalizedCurrentName === normalizedName ||
         normalizedCurrentNumber === normalizedNumber
       );
     });
