@@ -13,7 +13,6 @@ class MyNumbers extends Component {
   componentDidMount() {
     const contacts = JSON.parse(localStorage.getItem('my-numbers'));
     if (contacts?.length) {
-      console.log();
       this.setState({
         contacts,
       });
