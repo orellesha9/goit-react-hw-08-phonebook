@@ -57,7 +57,7 @@ useEffect(() => {
     ));
   };
 
-  const changeFilter = ({ target }) => setContacts(target.value);
+  const changeFilter = ({ target }) => setFilter(target.value);
 
   const getFilterContacts = () => {
     if (!filter) {
