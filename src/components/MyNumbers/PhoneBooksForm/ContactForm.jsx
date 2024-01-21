@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import styles from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 
@@ -6,6 +6,62 @@ const INITIAL_STATE = {
   name: '',
   number: '',
 };
+
+const ContactForm = ({ onSubmit }) => {
+  const [state, setState] = useState({ ...INITIAL_STATE });
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setState({ ...state, [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    onSubmit({ ...state });
+    reset();
+  };
+
+  const reset = () => {
+    setState({ ...INITIAL_STATE });
+  };
+
+  const bookTitleID = nanoid();
+  const bookNumberID = nanoid();
+
+  const { name, number } = state;
+
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.formGroup}>
+        <label htmlFor={bookTitleID}>Name</label>
+        <input
+          value={name}
+          onChange={handleChange}
+          id={bookNumberID}
+          type="text"
+          name="name"
+          placeholder="name"
+          required
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <label htmlFor={bookTitleID}>Number</label>
+        <input
+          value={number}
+          required
+          onChange={handleChange}
+          id={bookNumberID}
+          type="tel"
+          name="number"
+          placeholder="Number"
+        />
+      </div>
+      <button type="submit">Add contact</button>
+    </form>
+  );
+};
+
+/*
 class ContactForm extends Component {
   bookTitleID = nanoid();
   bookNumberID = nanoid();
@@ -65,5 +121,5 @@ class ContactForm extends Component {
     );
   }
 }
-
+*/
 export default ContactForm;

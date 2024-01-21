@@ -1,9 +1,102 @@
-import { Component } from 'react';
+import { Component, useState, useEffect } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { nanoid } from 'nanoid';
 
+const MyNumbers = ({}) => {
+  const [contacts, setContacts] = useState(()=> {
+    const data = JSON.parse(localStorage.getItem("my-numbers"))
+    return data || [];
+  });
+  const [filter, setFilter] = useState("");
+  
+
+useEffect(() => {
+  localStorage.setItem('my-numbers', JSON.stringify(contacts))
+}, [contacts]);
+
+
+
+
+
+
+  const isDublicate = ({ name, number }) => {
+    const normalizedName = name.toLowerCase();
+    const normalizedNumber = number.toLowerCase();
+
+    const dublicate = contacts.find(item => {
+      const normalizedCurrentName = item.name.toLowerCase();
+      const normalizedCurrentNumber = item.number.toLowerCase();
+
+      return (
+        normalizedCurrentName === normalizedName ||
+        normalizedCurrentNumber === normalizedNumber
+      );
+    });
+    return Boolean(dublicate);
+  };
+
+  const addNumber = data => {
+    if (isDublicate(data)) {
+      return alert(`${data.name} is already in contacts.`);
+    }
+
+    setContacts(prevContacts => {
+      const newNumber = {
+        id: nanoid(),
+        ...data,
+      };
+      return [...contacts, newNumber];
+    });
+  };
+
+  const deleteNumber = id => {
+    setContacts(( prevContacts  =>
+      prevContacts.filter(item => item.id !== id)
+    ));
+  };
+
+  const changeFilter = ({ target }) => setContacts(target.value);
+
+  const getFilterContacts = () => {
+    if (!filter) {
+      return contacts;
+    }
+    const normalizedFilter = filter.toLowerCase();
+    const filterContacts = contacts.filter(({ name, number }) => {
+      const normalizedName = name.toLowerCase();
+      const normalizednumber = number.toLowerCase();
+
+      return (
+        normalizedName.includes(normalizedFilter) ||
+        normalizednumber.includes(normalizedFilter)
+      );
+    });
+    return filterContacts;
+  };
+
+  const items = getFilterContacts();
+
+  return (
+    <div className={styles.wrapper}>
+      <h1 className={styles.title}>Phonebook</h1>
+      <ContactForm onSubmit={addNumber} />
+      <div className={styles.listWrapper}>
+        <h2>Contacts</h2>
+        <p>Find contacts by name</p>
+        <input
+          onChange={changeFilter}
+          name="filter"
+          placeholder="Search"
+        ></input>
+        <ContactList items={items} deleteNumber={deleteNumber} />
+      </div>
+    </div>
+  );
+};
+
+/*
 class MyNumbers extends Component {
   state = {
     contacts: [],
@@ -111,4 +204,5 @@ class MyNumbers extends Component {
     );
   }
 }
+*/
 export default MyNumbers;
