@@ -4,7 +4,7 @@ import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { nanoid } from 'nanoid';
 
-const MyNumbers = ({}) => {
+const MyNumbers = () => {
   const [contacts, setContacts] = useState(()=> {
     const data = JSON.parse(localStorage.getItem("my-numbers"))
     return data || [];
