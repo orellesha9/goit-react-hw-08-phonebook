@@ -1,4 +1,4 @@
-import { Component, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
