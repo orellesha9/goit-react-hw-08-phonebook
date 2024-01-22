@@ -49,7 +49,7 @@ const MyNumbers = () => {
         id: nanoid(),
         ...data,
       };
-      return [...contacts, newNumber];
+      return [...prevContacts, newNumber];
     });
   }, []);
 
