@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, memo, useCallback } from 'react';
 import styles from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 
@@ -10,23 +10,24 @@ const INITIAL_STATE = {
 const ContactForm = ({ onSubmit }) => {
   const [state, setState] = useState({ ...INITIAL_STATE });
 
-  const handleChange = ({ target }) => {
+  const handleChange = useCallback(({ target }) => {
     const { name, value } = target;
-    setState({ ...state, [name]: value });
-  };
+    setState(prevState => ({ ...prevState, [name]: value }));
+  }, []);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(state);
     onSubmit({ ...state });
     reset();
   };
 
-  const reset = () => {
-    setState({ ...INITIAL_STATE });
-  };
+  const reset = useCallback(() => {
+    setState({ ...INITIAL_STATE })
+  }, []);
 
-  const bookTitleID = nanoid();
-  const bookNumberID = nanoid();
+  const bookTitleID = useMemo(() => nanoid(), []);
+  const bookNumberID = useMemo(() => nanoid(), []);
 
   const { name, number } = state;
 
@@ -122,4 +123,4 @@ class ContactForm extends Component {
   }
 }
 */
-export default ContactForm;
+export default memo(ContactForm);

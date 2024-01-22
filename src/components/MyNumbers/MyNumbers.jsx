@@ -1,25 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { nanoid } from 'nanoid';
 
 const MyNumbers = () => {
-  const [contacts, setContacts] = useState(()=> {
-    const data = JSON.parse(localStorage.getItem("my-numbers"))
+  const [contacts, setContacts] = useState(() => {
+    const data = JSON.parse(localStorage.getItem('my-numbers'));
     return data || [];
   });
-  const [filter, setFilter] = useState("");
-  
+  const [filter, setFilter] = useState('');
 
-useEffect(() => {
-  localStorage.setItem('my-numbers', JSON.stringify(contacts))
-}, [contacts]);
+  const firstRender = useRef(true);
 
+  useEffect(() => {
+    if (!firstRender.current) {
+      localStorage.setItem('my-numbers', JSON.stringify(contacts));
+    }
+  }, [contacts]);
 
-
-
-
+  useEffect(() => {
+    firstRender.current = false;
+  }, []);
 
   const isDublicate = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
@@ -37,7 +39,7 @@ useEffect(() => {
     return Boolean(dublicate);
   };
 
-  const addNumber = data => {
+  const addNumber = useCallback(data => {
     if (isDublicate(data)) {
       return alert(`${data.name} is already in contacts.`);
     }
@@ -49,15 +51,13 @@ useEffect(() => {
       };
       return [...contacts, newNumber];
     });
-  };
+  }, []);
 
-  const deleteNumber = id => {
-    setContacts(( prevContacts  =>
-      prevContacts.filter(item => item.id !== id)
-    ));
-  };
+  const deleteNumber = useCallback(id => {
+    setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
+  }, []);
 
-  const changeFilter = ({ target }) => setFilter(target.value);
+  const changeFilter = useCallback(({ target }) => setFilter(target.value), []);
 
   const getFilterContacts = () => {
     if (!filter) {
