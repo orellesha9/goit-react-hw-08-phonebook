@@ -39,7 +39,7 @@ const MyNumbers = () => {
     return Boolean(dublicate);
   };
 
-  const addNumber = useCallback(data => {
+  const addNumber = useCallback((data) => {
     if (isDublicate(data)) {
       return alert(`${data.name} is already in contacts.`);
     }
