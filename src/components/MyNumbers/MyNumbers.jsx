@@ -50,7 +50,8 @@ const MyNumbers = () => {
       };
       return [...prevContacts, newNumber];
     })
-  }, );
+    console.log("number");
+  }, [contacts,setContacts]);
 
   const deleteNumber = useCallback(id => {
     setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
