@@ -39,19 +39,18 @@ const MyNumbers = () => {
     return Boolean(dublicate);
   };
 
-  const addNumber = useCallback((data) => {
+  const addNumber = useCallback(data => {
     if (isDublicate(data)) {
       return alert(`${data.name} is already in contacts.`);
     }
-  
-    setContacts((prevContacts) => {
+    setContacts(prevContacts => {
       const newNumber = {
         id: nanoid(),
         ...data,
       };
       return [...prevContacts, newNumber];
     })
-  },); 
+  }, );
 
   const deleteNumber = useCallback(id => {
     setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
@@ -82,7 +81,7 @@ const MyNumbers = () => {
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Phonebook</h1>
       <ContactForm onSubmit={addNumber} />
-      <div className={styles.listWrapper}> 
+      <div className={styles.listWrapper}>
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
         <input
@@ -92,7 +91,7 @@ const MyNumbers = () => {
         ></input>
         <ContactList items={items} deleteNumber={deleteNumber} />
       </div>
-    </div> 
+    </div>
   );
 };
 
