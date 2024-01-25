@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback,useMemo } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
@@ -23,22 +23,26 @@ const MyNumbers = () => {
     firstRender.current = false;
   }, []);
 
-  const isDublicate = ({ name, number }) => {
-    const normalizedName = name.toLowerCase();
-    const normalizedNumber = number.toLowerCase();
 
-    const dublicate = contacts.find(item => {
-      const normalizedCurrentName = item.name.toLowerCase();
-      const normalizedCurrentNumber = item.number.toLowerCase();
 
-      return (
-        normalizedCurrentName === normalizedName ||
-        normalizedCurrentNumber === normalizedNumber
-      );
-    });
-    return Boolean(dublicate);
-  };
-
+  const isDublicate = useMemo(() => {
+    return ({ name, number }) => {
+      const normalizedName = name.toLowerCase();
+      const normalizedNumber = number.toLowerCase();
+  
+      const dublicate = contacts.find(item => {
+        const normalizedCurrentName = item.name.toLowerCase();
+        const normalizedCurrentNumber = item.number.toLowerCase();
+  
+        return (
+          normalizedCurrentName === normalizedName ||
+          normalizedCurrentNumber === normalizedNumber
+        );
+      });
+      return Boolean(dublicate);
+    };
+  }, [contacts]);
+  
   const addNumber = useCallback(data => {
     if (isDublicate(data)) {
       return alert(`${data.name} is already in contacts.`);
@@ -49,9 +53,24 @@ const MyNumbers = () => {
         ...data,
       };
       return [...prevContacts, newNumber];
-    })
-    console.log("number");
-  }, [contacts,setContacts]);
+    });
+  }, [isDublicate]);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const deleteNumber = useCallback(id => {
     setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
