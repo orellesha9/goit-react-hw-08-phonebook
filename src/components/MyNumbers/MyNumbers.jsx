@@ -1,115 +1,100 @@
-import { useState, useEffect, useRef, useCallback,useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { nanoid } from 'nanoid';
+import { UseSelector, useSelector } from 'react-redux';
+import store from '../../redux/store';
 
 const MyNumbers = () => {
-  const [contacts, setContacts] = useState(() => {
-    const data = JSON.parse(localStorage.getItem('my-numbers'));
-    return data || [];
-  });
+const contacts = useSelector(store => store.contacts);
+
+  // const [contacts, setContacts] = useState(() => {
+  //   const data = JSON.parse(localStorage.getItem('my-numbers'));
+  //   return data || [];
+  // });
   const [filter, setFilter] = useState('');
 
-  const firstRender = useRef(true);
+  // const firstRender = useRef(true);
 
-  useEffect(() => {
-    if (!firstRender.current) {
-      localStorage.setItem('my-numbers', JSON.stringify(contacts));
-    }
-  }, [contacts]);
+  // useEffect(() => {
+  //   if (!firstRender.current) {
+  //     localStorage.setItem('my-numbers', JSON.stringify(contacts));
+  //   }
+  // }, [contacts]);
 
-  useEffect(() => {
-    firstRender.current = false;
-  }, []);
+  // useEffect(() => {
+  //   firstRender.current = false;
+  // }, []);
 
+  // const isDublicate = useMemo(() => {
+  //   return ({ name, number }) => {
+  //     const normalizedName = name.toLowerCase();
+  //     const normalizedNumber = number.toLowerCase();
 
+  //     const dublicate = contacts.find(item => {
+  //       const normalizedCurrentName = item.name.toLowerCase();
+  //       const normalizedCurrentNumber = item.number.toLowerCase();
 
-  const isDublicate = useMemo(() => {
-    return ({ name, number }) => {
-      const normalizedName = name.toLowerCase();
-      const normalizedNumber = number.toLowerCase();
-  
-      const dublicate = contacts.find(item => {
-        const normalizedCurrentName = item.name.toLowerCase();
-        const normalizedCurrentNumber = item.number.toLowerCase();
-  
-        return (
-          normalizedCurrentName === normalizedName ||
-          normalizedCurrentNumber === normalizedNumber
-        );
-      });
-      return Boolean(dublicate);
-    };
-  }, [contacts]);
-  
-  const addNumber = useCallback(data => {
-    if (isDublicate(data)) {
-      return alert(`${data.name} is already in contacts.`);
-    }
-    setContacts(prevContacts => {
-      const newNumber = {
-        id: nanoid(),
-        ...data,
-      };
-      return [...prevContacts, newNumber];
-    });
-  }, [isDublicate]);
-  
+  //       return (
+  //         normalizedCurrentName === normalizedName ||
+  //         normalizedCurrentNumber === normalizedNumber
+  //       );
+  //     });
+  //     return Boolean(dublicate);
+  //   };
+  // }, [contacts]);
 
+  // const addNumber = useCallback(
+  //   data => {
+  //     if (isDublicate(data)) {
+  //       return alert(`${data.name} is already in contacts.`);
+  //     }
+  //     setContacts(prevContacts => {
+  //       const newNumber = {
+  //         id: nanoid(),
+  //         ...data,
+  //       };
+  //       return [...prevContacts, newNumber];
+  //     });
+  //   },
+  //   [isDublicate]
+  // );
 
+  // const deleteNumber = useCallback(id => {
+  //   setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
+  // }, []);
 
+  // const changeFilter = useCallback(({ target }) => setFilter(target.value), []);
 
+  // const getFilterContacts = () => {
+  //   if (!filter) {
+  //     return contacts;
+  //   }
+  //   const normalizedFilter = filter.toLowerCase();
+  //   const filterContacts = contacts.filter(({ name, number }) => {
+  //     const normalizedName = name.toLowerCase();
+  //     const normalizednumber = number.toLowerCase();
 
+  //     return (
+  //       normalizedName.includes(normalizedFilter) ||
+  //       normalizednumber.includes(normalizedFilter)
+  //     );
+  //   });
+  //   return filterContacts;
+  // };
 
-
-
-
-
-
-
-
-
-
-
-  const deleteNumber = useCallback(id => {
-    setContacts(prevContacts => prevContacts.filter(item => item.id !== id));
-  }, []);
-
-  const changeFilter = useCallback(({ target }) => setFilter(target.value), []);
-
-  const getFilterContacts = () => {
-    if (!filter) {
-      return contacts;
-    }
-    const normalizedFilter = filter.toLowerCase();
-    const filterContacts = contacts.filter(({ name, number }) => {
-      const normalizedName = name.toLowerCase();
-      const normalizednumber = number.toLowerCase();
-
-      return (
-        normalizedName.includes(normalizedFilter) ||
-        normalizednumber.includes(normalizedFilter)
-      );
-    });
-    return filterContacts;
-  };
-
-  const items = getFilterContacts();
+  // const items = getFilterContacts();
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Phonebook</h1>
-      <ContactForm onSubmit={addNumber} />
+      <ContactForm />
       <div className={styles.listWrapper}>
         <h2>Contacts</h2>
         <p>Find contacts by name</p>
-        <input
-          onChange={changeFilter}
-          name="filter"
-          placeholder="Search"
-        ></input>
-        <ContactList items={items} deleteNumber={deleteNumber} />
+        <input name="filter" placeholder="Search"></input>
+        <ContactList items={contacts} deleteNumber={()=>{}} />
       </div>
     </div>
   );
