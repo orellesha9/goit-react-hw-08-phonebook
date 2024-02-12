@@ -35,7 +35,7 @@ export const addContact = body => {
     }
   };
   return func;
-};
+}
 
 export const deleteNumber = id => {
   const func = async dispatch => {
