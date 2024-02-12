@@ -1,15 +1,24 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { useSelector, useDispatch } from 'react-redux';
-import { addNumber, deleteNumber } from '../../redux/contacts/contacts-slice';
-import { getFilterContacts } from '../../redux/contacts/constacts-selectors';
+import { selectAllNumbers } from '../../redux/contacts/constacts-selectors';
 import { setFilter } from '../../redux/filter/filter-slice';
+import {
+  fetchContacts,
+  addContact,
+  deleteNumber,
+} from '../../redux/contacts/contacts-operations.js';
 
 const MyNumbers = () => {
-  const contacts = useSelector(getFilterContacts);
+  const { contacts, isLoading, error } = useSelector(selectAllNumbers);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const isDublicate = useMemo(() => {
     return ({ name, number }) => {
@@ -35,8 +44,7 @@ const MyNumbers = () => {
         return alert(`${data.name} is already in contacts.`);
       }
 
-      const action = addNumber(data);
-      dispatch(action);
+      dispatch(addContact(data));
     },
     [dispatch, isDublicate]
   );
@@ -62,7 +70,11 @@ const MyNumbers = () => {
           onChange={changeFilter}
           placeholder="Search"
         ></input>
-        <ContactList items={contacts} deleteNumber={onDeleteNumber} />
+        {isLoading && <p>...Loading</p>}
+        {error && <p>{error}</p>}
+        {Boolean(contacts.length) && (
+          <ContactList items={contacts} deleteNumber={onDeleteNumber} />
+        )}
       </div>
     </div>
   );

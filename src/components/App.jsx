@@ -1,4 +1,4 @@
-import MyNumbers from "./MyNumbers/MyNumbers";
+import MyNumbers from './MyNumbers/MyNumbers';
 
 export const App = () => {
   return (
