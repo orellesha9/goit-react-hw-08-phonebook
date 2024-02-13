@@ -1,5 +1,5 @@
 import MyNumbers from './MyNumbers/MyNumbers';
-import AllMyNumbers from '../../src/components/AllMyNumbers/AllMyNumbers';
+// import AllMyNumbers from '../../src/components/AllMyNumbers/AllMyNumbers';
 
 export const App = () => {
   return (
