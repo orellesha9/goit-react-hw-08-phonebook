@@ -1,51 +1,73 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as contactsApi from '../../api/contacts-api';
-import {
-  fetchContactsLoading,
-  fetchContactsSuccess,
-  fetchContactsError,
-  addContactSuccess,
-  addContactLoading,
-  addContactError,
-  deleteNumberError,
-  deleteNumberLoading,
-  deleteNumberSuccess,
-} from './contacts-slice';
 
-export const fetchContacts = () => {
-  const func = async dispatch => {
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, thunkAPI) => {
     try {
-      dispatch(fetchContactsLoading());
       const data = await contactsApi.requestFetchContacts();
-      dispatch(fetchContactsSuccess(data));
+      return data;
     } catch (error) {
-      dispatch(fetchContactsError(error.message));
+      return thunkAPI.rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  }
+);
 
-export const addContact = body => {
-  const func = async dispatch => {
+export const addContact = createAsyncThunk(
+  'contacts/add',
+  async (body, { rejectWithValue }) => {
     try {
-      dispatch(addContactLoading());
       const data = await contactsApi.requestAddContacts(body);
-      dispatch(addContactSuccess(data));
+      return data;
     } catch (error) {
-      dispatch(addContactError(error.message));
+      return rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  },
+  {
+    condition: ({ name, number }, { getState }) => {
+      const { contacts } = getState();
 
-export const deleteNumber = id => {
-  const func = async dispatch => {
+      const normalizedName = name.toLowerCase();
+      const normalizedPhone = number.toLowerCase();
+
+      const dublicate = contacts.contact.find(item => {
+        const normalizedCurrentName = item.name.toLowerCase();
+        const normalizedCurrentPhone = item.number.toLowerCase();
+
+        return (
+          normalizedCurrentName === normalizedName ||
+          normalizedCurrentPhone === normalizedPhone
+        );
+      });
+      if (dublicate) {
+        alert(`${name} is already in contacts.`);
+        return false;
+      }
+    },
+  }
+);
+
+// export const addContact = body => {
+//   const func = async dispatch => {
+//     try {
+//       dispatch(addContactLoading());
+//       const data = await contactsApi.requestAddContacts(body);
+//       dispatch(addContactSuccess(data));
+//     } catch (error) {
+//       dispatch(addContactError(error.message));
+//     }
+//   };
+//   return func;
+// };
+
+export const deleteNumber = createAsyncThunk(
+  'contact/delete',
+  async (id, { rejectWithValue }) => {
     try {
-      dispatch(deleteNumberLoading());
       await contactsApi.requestDeleteContact(id);
-      dispatch(deleteNumberSuccess(id));
+      return id;
     } catch (error) {
-      dispatch(deleteNumberError(error.message));
+      return rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  }
+);

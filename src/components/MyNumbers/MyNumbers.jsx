@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import styles from './my-numbers.module.css';
 import ContactForm from './PhoneBooksForm/ContactForm';
 import ContactList from './PhoneBookList/ContactList';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAllNumbers } from '../../redux/contacts/constacts-selectors';
+import { selectFilterContacts } from '../../redux/contacts/constacts-selectors';
 import { setFilter } from '../../redux/filter/filter-slice';
 import {
   fetchContacts,
@@ -12,7 +12,7 @@ import {
 } from '../../redux/contacts/contacts-operations.js';
 
 const MyNumbers = () => {
-  const { contacts, isLoading, error } = useSelector(selectAllNumbers);
+  const { contact, isLoading, error } = useSelector(selectFilterContacts);
 
   const dispatch = useDispatch();
 
@@ -20,33 +20,11 @@ const MyNumbers = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const isDublicate = useMemo(() => {
-    return ({ name, number }) => {
-      const normalizedName = name.toLowerCase();
-      const normalizedNumber = number.toLowerCase();
-
-      const dublicate = contacts.find(item => {
-        const normalizedCurrentName = item.name.toLowerCase();
-        const normalizedCurrentNumber = item.number.toLowerCase();
-
-        return (
-          normalizedCurrentName === normalizedName ||
-          normalizedCurrentNumber === normalizedNumber
-        );
-      });
-      return Boolean(dublicate);
-    };
-  }, [contacts]);
-
   const onAddNumber = useCallback(
     data => {
-      if (isDublicate(data)) {
-        return alert(`${data.name} is already in contacts.`);
-      }
-
       dispatch(addContact(data));
     },
-    [dispatch, isDublicate]
+    [dispatch]
   );
 
   const onDeleteNumber = useCallback(
@@ -72,8 +50,8 @@ const MyNumbers = () => {
         ></input>
         {isLoading && <p>...Loading</p>}
         {error && <p>{error}</p>}
-        {Boolean(contacts.length) && (
-          <ContactList items={contacts} deleteNumber={onDeleteNumber} />
+        {Boolean(contact.length) && (
+          <ContactList items={contact} deleteNumber={onDeleteNumber} />
         )}
       </div>
     </div>
