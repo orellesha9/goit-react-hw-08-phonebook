@@ -18,4 +18,4 @@ export const requestAddContacts = async body => {
 export const requestDeleteContact = async id => {
   const { data } = await contactsInstance.delete(`/${id}`);
   return data;
-};
+} ;
