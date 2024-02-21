@@ -3,12 +3,12 @@ import * as contactsApi from '../../api/contacts-api';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
-  async (_, thunkAPI) => {
+  async (_, {rejectWithValue}) => {
     try {
       const data = await contactsApi.requestFetchContacts();
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -47,18 +47,6 @@ export const addContact = createAsyncThunk(
   }
 );
 
-// export const addContact = body => {
-//   const func = async dispatch => {
-//     try {
-//       dispatch(addContactLoading());
-//       const data = await contactsApi.requestAddContacts(body);
-//       dispatch(addContactSuccess(data));
-//     } catch (error) {
-//       dispatch(addContactError(error.message));
-//     }
-//   };
-//   return func;
-// };
 
 export const deleteNumber = createAsyncThunk(
   'contact/delete',
