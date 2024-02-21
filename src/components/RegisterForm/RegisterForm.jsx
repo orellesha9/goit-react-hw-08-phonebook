@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useId } from 'react';
+import { useState, useCallback, useId } from 'react';
 
 import styles from './register-form.module.css';
 
