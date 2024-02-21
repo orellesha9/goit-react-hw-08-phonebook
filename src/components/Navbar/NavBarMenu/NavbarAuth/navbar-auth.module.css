@@ -7,6 +7,7 @@
   text-decoration: none;
   font-size: 18px;
   color: black;
+  margin-right: 20px;
 }
 .link:hover {
   border-bottom: 1px solid;

@@ -1,9 +1,14 @@
 .block {
-  display: flex;
+  margin-left: 20px;
   align-items: center;
   margin-bottom: 15px;
 }
 
 .block label {
   width: 80px;
+}
+
+
+.register_btn {
+  margin-left: 15px!important
 }

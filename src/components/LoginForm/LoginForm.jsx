@@ -1,4 +1,6 @@
 import { useState, useCallback, useId } from 'react';
+import { Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
 
 import styles from './login-form.module.css';
 
@@ -32,28 +34,31 @@ const LoginForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.block}>
-        <label htmlFor={emailId}>Email:</label>
-        <input
+        <label htmlFor={emailId}></label>
+        <TextField
           value={email}
           onChange={handleChange}
           type="email"
           name="email"
           id={emailId}
+          label="Email" variant="outlined"
           required
         />
       </div>
       <div className={styles.block}>
-        <label htmlFor={passwordId}>Password:</label>
-        <input
+        <label htmlFor={passwordId}></label>
+        <TextField
+        label="Password" variant="outlined"
           value={password}
           onChange={handleChange}
           type="password"
+          
           name="password"
           id={passwordId}
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <Button variant="outlined" className={styles.btn_login} type="submit">Login</Button>
     </form>
   );
 };

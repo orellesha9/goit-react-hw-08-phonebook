@@ -1,7 +1,6 @@
 import { useState, useMemo, memo, useCallback } from 'react';
 import styles from './contactForm.module.css';
 import { nanoid } from 'nanoid';
-
 const INITIAL_STATE = {
   name: '',
   number: '',
@@ -57,7 +56,7 @@ const ContactForm = ({ onSubmit }) => {
           placeholder="Number"
         />
       </div>
-      <button type="submit">Add contact</button>
+      <button >Add contact</button>
     </form>
   );
 };

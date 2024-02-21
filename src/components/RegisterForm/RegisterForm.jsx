@@ -1,5 +1,6 @@
 import { useState, useCallback, useId } from 'react';
-
+import { Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import styles from './register-form.module.css';
 
 const INITIAL_STATE = {
@@ -34,19 +35,21 @@ const RegisterForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.block}>
-        <label htmlFor={nameId}>Name:</label>
-        <input
+        <label htmlFor={nameId}></label>
+        <TextField
           value={name}
           onChange={handleChange}
           name="name"
+          label="Name" variant="outlined"
           required
           id={nameId}
         />
       </div>
       <div className={styles.block}>
-        <label htmlFor={emailId}>Email:</label>
-        <input
+        <label htmlFor={emailId}></label>
+        <TextField
           value={email}
+          label="Email" variant="outlined"
           onChange={handleChange}
           type="email"
           name="email"
@@ -55,17 +58,18 @@ const RegisterForm = ({ onSubmit }) => {
         />
       </div>
       <div className={styles.block}>
-        <label htmlFor={passwordId}>Password:</label>
-        <input
+        <label htmlFor={passwordId}></label>
+        <TextField
           value={password}
           onChange={handleChange}
           type="password"
           name="password"
+          label="Password" variant="outlined"
           id={passwordId}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <Button className={styles.register_btn} variant="outlined" type="submit">Register</Button>
     </form>
   );
 };
