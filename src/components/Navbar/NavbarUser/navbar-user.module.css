@@ -1,9 +1,10 @@
 .block {
   display: flex;
   align-items: center;
-  gap: 10px;
+
 }
 
 .logout_button {
   cursor: pointer;
+  padding: 0px!important
 }

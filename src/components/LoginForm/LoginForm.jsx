@@ -52,7 +52,6 @@ const LoginForm = ({ onSubmit }) => {
           value={password}
           onChange={handleChange}
           type="password"
-          
           name="password"
           id={passwordId}
           required

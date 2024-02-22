@@ -7,14 +7,14 @@ import styles from './navbar-user.module.css';
 
 const NavbarUser = () => {
   const { name } = useSelector(selectUser);
-
+console.log(name);
   const dispatch = useDispatch();
 
   const onLogout = () => dispatch(logout());
 
   return (
     <div className={styles.block}>
-      {name}
+      {name} |
       <Button onClick={onLogout} className={styles.logout_button}>Logout</Button>
     </div>
   );
